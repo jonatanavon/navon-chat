@@ -3,704 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>נבון AI - עוזר וירטואלי חכם</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>נבון AI - עוזר חכם</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Heebo', sans-serif;
-            background: linear-gradient(135deg, #F8F9FB 0%, #E8EEF2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            padding: 2rem;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(30px, -30px) rotate(90deg); }
-            50% { transform: translate(-20px, 20px) rotate(180deg); }
-            75% { transform: translate(20px, 30px) rotate(270deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        @keyframes messageSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-
-        @keyframes wave {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(20deg); }
-            75% { transform: rotate(-20deg); }
-        }
-
-        .bg-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .bg-shape {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.05;
-        }
-
-        .bg-shape-1 {
-            width: 300px;
-            height: 300px;
-            background: #0A2F51;
-            top: 10%;
-            right: 5%;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .bg-shape-2 {
-            width: 200px;
-            height: 200px;
-            background: #137547;
-            bottom: 15%;
-            left: 10%;
-            animation: float 20s infinite ease-in-out 5s;
-        }
-
-        .bg-shape-3 {
-            width: 150px;
-            height: 150px;
-            background: #F39237;
-            top: 50%;
-            left: 50%;
-            animation: float 20s infinite ease-in-out 10s;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .logo-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .logo {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #0A2F51, #137547);
-            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 10px 30px rgba(10, 47, 81, 0.08);
-            animation: pulse 2s infinite;
+            padding: 1rem;
         }
-
-        h1 {
-            font-family: 'Rubik', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #0A2F51, #137547);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #666666;
-            font-weight: 300;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 2rem;
-        }
-
-        .chat-container {
+        .container {
+            max-width: 800px;
+            width: 100%;
             background: white;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(10, 47, 81, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 700px;
         }
-
-        .chat-header {
+        .header {
             background: linear-gradient(135deg, #0A2F51, #137547);
             color: white;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 2rem;
+            text-align: center;
         }
-
-        .chat-header h3 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+        .header h1 {
+            font-family: 'Rubik', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
         }
-
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
+        .header p {
             opacity: 0.9;
+            font-size: 1.1rem;
         }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background: #10B981;
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        .messages {
-            flex: 1;
+        .chat-box {
+            height: 500px;
             overflow-y: auto;
             padding: 2rem;
-            background: linear-gradient(to bottom, #FAFBFC, #FFFFFF);
+            background: #fafafa;
         }
-
-        .welcome {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: #666666;
-        }
-
-        .welcome-emoji {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: wave 2s infinite;
-        }
-
-        .welcome h3 {
-            color: #0A2F51;
-            margin-bottom: 0.5rem;
-        }
-
         .message {
+            margin-bottom: 1.5rem;
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
-            animation: messageSlide 0.4s ease-out;
         }
-
-        .message.user {
-            flex-direction: row-reverse;
-        }
-
-        .message-avatar {
+        .message.bot { flex-direction: row; }
+        .message.user { flex-direction: row-reverse; }
+        .avatar {
             width: 40px;
             height: 40px;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             flex-shrink: 0;
         }
-
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, #0A2F51, #0A4F81);
-        }
-
-        .message.bot .message-avatar {
-            background: linear-gradient(135deg, #137547, #F39237);
-        }
-
-        .message-content-wrapper {
-            flex: 1;
+        .message.bot .avatar { background: linear-gradient(135deg, #137547, #F39237); }
+        .message.user .avatar { background: linear-gradient(135deg, #0A2F51, #0A4F81); }
+        .bubble {
             max-width: 70%;
-        }
-
-        .message.user .message-content-wrapper {
-            text-align: left;
-        }
-
-        .message-content {
             padding: 1rem 1.5rem;
-            border-radius: 18px;
+            border-radius: 15px;
             line-height: 1.6;
-            font-size: 0.95rem;
-            white-space: pre-line;
         }
-
-        .message.user .message-content {
+        .message.bot .bubble {
+            background: white;
+            border: 1px solid #e0e0e0;
+        }
+        .message.user .bubble {
             background: #0A2F51;
             color: white;
-            box-shadow: 0 4px 15px rgba(10, 47, 81, 0.2);
         }
-
-        .message.bot .message-content {
-            background: #F1F5F9;
-            color: #1A1A1A;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: #666666;
-            margin-top: 0.5rem;
-        }
-
-        .typing-indicator {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .typing-dots {
-            display: flex;
-            gap: 0.5rem;
-            padding: 1rem 1.5rem;
-            background: #F1F5F9;
-            border-radius: 18px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #666666;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .chat-input {
-            padding: 1.5rem 2rem;
+        .input-area {
+            padding: 1.5rem;
             background: white;
-            border-top: 1px solid #E5E7EB;
-        }
-
-        .input-wrapper {
+            border-top: 1px solid #e0e0e0;
             display: flex;
             gap: 1rem;
-            align-items: center;
         }
-
         input {
             flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid #E5E7EB;
-            border-radius: 12px;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-family: 'Heebo', sans-serif;
             font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
         }
-
         input:focus {
+            outline: none;
             border-color: #0A2F51;
         }
-
         button {
             padding: 1rem 2rem;
             background: linear-gradient(135deg, #0A2F51, #137547);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Heebo', sans-serif;
             font-weight: 600;
-            font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(10, 47, 81, 0.2);
-            transition: all 0.3s ease;
+            font-size: 1rem;
         }
-
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(10, 47, 81, 0.3);
+            box-shadow: 0 5px 15px rgba(10, 47, 81, 0.3);
         }
-
-        .sidebar {
+        .quick-btns {
+            padding: 0 2rem 1.5rem;
             display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
-
-        .card {
-            background: white;
+        .quick-btn {
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border: 1px solid #e0e0e0;
             border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(10, 47, 81, 0.08);
-        }
-
-        .card h3 {
-            font-family: 'Rubik', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #0A2F51;
-            margin-bottom: 1rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .stat {
-            background: linear-gradient(135deg, #F8F9FB, #E8F4F8);
-            padding: 1rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 900;
-            color: #0A2F51;
-            font-family: 'Rubik', sans-serif;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: #666666;
-            margin-top: 0.25rem;
-        }
-
-        .quick-questions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .quick-question {
-            padding: 0.75rem 1rem;
-            background: #F8F9FB;
-            border: 1px solid #E5E7EB;
-            border-radius: 10px;
-            text-align: right;
-            cursor: pointer;
-            font-family: 'Heebo', sans-serif;
             font-size: 0.9rem;
-            color: #1A1A1A;
-            transition: all 0.3s ease;
+            cursor: pointer;
         }
-
-        .quick-question:hover {
+        .quick-btn:hover {
             background: #0A2F51;
             color: white;
             border-color: #0A2F51;
-            transform: translateX(-4px);
         }
-
-        .hidden {
-            display: none;
-        }
-
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                order: -1;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            body {
-                padding: 1rem;
-            }
-
-            .chat-container {
-                height: 600px;
-            }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .chat-box { height: 400px; padding: 1rem; }
+            .bubble { max-width: 85%; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-shapes">
-        <div class="bg-shape bg-shape-1"></div>
-        <div class="bg-shape bg-shape-2"></div>
-        <div class="bg-shape bg-shape-3"></div>
-    </div>
-
     <div class="container">
         <div class="header">
-            <div class="logo-container">
-                <div class="logo">🤖</div>
+            <h1>🤖 נבון AI</h1>
+            <p>עוזר חכם לנבון פרויקטים בחינוך</p>
+        </div>
+        
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">
+                <div class="avatar">🤖</div>
+                <div class="bubble">
+                    שלום! 👋 אני העוזר הווירטואלי של נבון פרויקטים בחינוך.<br><br>
+                    אני יכול לעזור לך עם:<br>
+                    📚 מידע על התוכניות שלנו<br>
+                    🎨 סדנאות ופעילויות<br>
+                    📝 הרשמה לצהרונים וקייטנות<br>
+                    📞 פרטי יצירת קשר<br><br>
+                    מה תרצה לדעת?
+                </div>
             </div>
-            <h1>נבון AI</h1>
-            <p class="subtitle">עוזר חכם לנבון פרויקטים בחינוך</p>
         </div>
 
-        <div class="main-grid">
-            <div class="chat-container">
-                <div class="chat-header">
-                    <div>
-                        <h3>צ'אט עם העוזר</h3>
-                        <div class="status">
-                            <span class="status-dot"></span>
-                            <span>מקוון ומוכן לעזור</span>
-                        </div>
-                    </div>
-                    <div style="font-size: 1.5rem;">💬</div>
-                </div>
-
-                <div class="messages" id="messages">
-                    <div class="welcome" id="welcome">
-                        <div class="welcome-emoji">👋</div>
-                        <h3>שלום ובברוכים הבאים!</h3>
-                        <p>אני העוזר הווירטואלי של נבון פרויקטים.<br/>איך אוכל לעזור לך היום?</p>
-                    </div>
-                </div>
-
-                <div class="chat-input">
-                    <div class="input-wrapper">
-                        <input type="text" id="messageInput" placeholder="הקלד/י את השאלה שלך כאן..." />
-                        <button onclick="sendMessage()">שלח</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar">
-                <div class="card">
-                    <h3>📊 סטטיסטיקות</h3>
-                    <div class="stats-grid">
-                        <div class="stat">
-                            <div class="stat-number" id="messageCount">0</div>
-                            <div class="stat-label">הודעות</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">24/7</div>
-                            <div class="stat-label">זמינות</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>⚡ שאלות נפוצות</h3>
-                    <div class="quick-questions">
-                        <button class="quick-question" onclick="askQuestion('מה שעות הפעילות של נבון?')">מה שעות הפעילות של נבון?</button>
-                        <button class="quick-question" onclick="askQuestion('איך נרשמים לצהרון?')">איך נרשמים לצהרון?</button>
-                        <button class="quick-question" onclick="askQuestion('ספר לי על תוכניות הטכנולוגיה')">ספר לי על תוכניות הטכנולוגיה</button>
-                        <button class="quick-question" onclick="askQuestion('מה כולל תכנית ניצנים?')">מה כולל תכנית ניצנים?</button>
-                        <button class="quick-question" onclick="askQuestion('איך ליצור קשר?')">איך ליצור קשר?</button>
-                        <button class="quick-question" onclick="askQuestion('ספר לי על סדנאות ODT')">ספר לי על סדנאות ODT</button>
-                    </div>
-                </div>
-            </div>
+        <div class="quick-btns">
+            <button class="quick-btn" onclick="ask('מה שעות הפעילות?')">שעות פעילות</button>
+            <button class="quick-btn" onclick="ask('איך ליצור קשר?')">יצירת קשר</button>
+            <button class="quick-btn" onclick="ask('ספר על תוכניות הטכנולוגיה')">טכנולוגיה</button>
+            <button class="quick-btn" onclick="ask('מה כולל תכנית ניצנים?')">תכנית ניצנים</button>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="הקלד/י את השאלה שלך..." onkeypress="if(event.key==='Enter') send()">
+            <button onclick="send()">שלח</button>
         </div>
     </div>
 
     <script>
-        const knowledgeBase = {
+        const kb = {
             "אודות": "נבון פרויקטים בחינוך היא חברה מובילה בתחום התוכניות החינוכיות למוסדות חינוך בכל הארץ. אנחנו מספקים תוכניות העשרה, צהרונים, קייטנות וסדנאות במגוון תחומים.",
             "טכנולוגיה": "אנחנו מובילים בתחום הטכנולוגיה! מציעים תל\"ן למוסדות החינוך תוך שימוש ביישומי מחשב, תוכנות גרפיקה ועיצוב, ומתחמי מציאות מדומה בקייטנות.",
-            "תכנות": "בתוכניות לתיכונים אנו מציעים חוגי תכנות עם מורים מקצועיים המובילים בתחום. התלמידים לומדים תכנות מעשי ומדיה דיגיטלית.",
-            "מחשבים": "יש לנו תוכניות העשרה בתל\"ן (תקשוב ומדיה) למוסדות החינוך, כולל עבודה עם תוכנות גרפיקה ועיצוב מתקדמות.",
-            "מדע": "מובילים במדע! הילדים נחשפים לתחומי מדע שונים - אסטרונומיה, פיזיקה, מתמטיקה, טיסנות, תעופה, כימיה, ביולוגיה ועוד. בסדנאות, הילדים מקבלים ידע מדעי-פיזיקלי רחב תוך חוויה של בניה ויצירת דגמים ומשחקים תוך ניסוי מדעי.",
-            "פיזיקה": "בסדנאות המדע שלנו הילדים לומדים פיזיקה באופן מעשי - בניית דגמים, ניסויים וחוויות מדעיות מרתקות.",
-            "כימיה": "חלק מתוכניות המדע שלנו כוללות ניסויים בכימיה בצורה בטוחה ומהנה לילדים.",
-            "אומנות": "מובילים באומנות ויצירה! אנחנו בנבון יודעים לבצע התאמה מלאה בין אופי התלמידים לתוכן הסדנא אשר יפיק את מירב החוויה לתלמידים.",
-            "יצירה": "סדנאות יצירה מגוונות המותאמות אישית לאופי התלמידים, עם מדריכים מקצועיים ומנוסים.",
-            "תיכון": "תוכניות העשרה לתיכונים כוללות: מוזיקה, דיג'יי, מחול, ריקוד, איפור ועיצוב שיער, תכנות, מדיה דיגיטלית, כתבים צעירים ומבחר חוגי אתלטיקה וספורט - עם מורים מקצועיים המובילים בתחום.",
-            "מוזיקה": "מציעים חוגי מוזיקה ודיג'יי לתלמידי תיכון עם מורים מקצועיים.",
-            "ריקוד": "חוגי מחול וריקוד לתיכון עם מדריכים מובילים בתחום.",
-            "ספורט": "מבחר חוגי אתלטיקה וספורט לתלמידי תיכון.",
-            "ODT": "סדנאות ODT (Out Door Training) - פעילות חוץ חכמה שמיועדת לעזור לתלמידים לגלות דברים חדשים על עצמם ועל היכולות שלהם, להיזכר במיומנויות ולהאיר תובנות בתקשורת עם אחרים. הפעילות מותאמת לכל שכבות הגיל מצעירים עד מבוגרים וימי עובדים.",
-            "פעילות חוץ": "מציעים סדנאות ODT - פעילויות חוץ עם מדריכים מוסמכים ומנוסים. הפעילות כוללת תחנות בהן התלמידים מוצאים את היכולת שלהם בעבודה קבוצתית.",
-            "עבודה קבוצתית": "בסדנאות ODT התלמידים עוברים תחנות שונות ומתרגלים עבודה קבוצתית, מנהיגות ותקשורת יעילה.",
-            "צהרון": "אנחנו מפעילים צהרונים איכותיים במסגרת תכנית ניצנים. ההרשמה מתבצעת דרך האתר שלנו. ההורים מאוד מרוצים מהשירות!",
-            "קייטנה": "מפעילים קייטנות בחופשות עם תוכניות העשרה מגוונות - טכנולוגיה, מדע, אומנות ועוד. הילדים חוזרים עם חוויות בלתי נשכחות!",
+            "מדע": "מובילים במדע! הילדים נחשפים לתחומי מדע שונים - אסטרונומיה, פיזיקה, מתמטיקה, טיסנות, תעופה, כימיה, ביולוגיה ועוד.",
             "ניצנים": "תכנית ניצנים - תוכנית הצהרונים והקייטנות שלנו. כוללת מגוון פעילויות העשרה איכותיות.",
-            "הרשמה": "ההרשמה לצהרונים וקייטנות מתבצעת דרך האתר שלנו בקישור המתאים. יש אפשרות להרשמה לתשפ\"ז ותשפ\"ו.",
-            "טלפון": "ניתן ליצור קשר במשרד בטלפון 08-6694007 או בווטסאפ 08-6858276. שעות הפעילות: ימים א'-ה' בין השעות 09:00-15:30.",
-            "מייל": "כתובת המייל שלנו: office@navon-p.co.il",
-            "כתובת": "המשרד שלנו נמצא ברחוב המלך חסן השני 1, קריית עקרון.",
+            "צהרון": "אנחנו מפעילים צהרונים איכותיים במסגרת תכנית ניצנים. ההרשמה מתבצעת דרך האתר שלנו.",
+            "קייטנה": "מפעילים קייטנות בחופשות עם תוכניות העשרה מגוונות - טכנולוגיה, מדע, אומנות ועוד!",
             "שעות": "שעות הפעילות שלנו: ימים א'-ה' בין 09:00-15:30.",
-            "קשר": "ניתן ליצור קשר: טלפון 08-6694007, ווטסאפ 08-6858276, מייל office@navon-p.co.il. שעות פעילות: א'-ה' 09:00-15:30.",
-            "whatsapp": "ניתן ליצור קשר בווטסאפ במספר 08-6858276.",
-            "וואטסאפ": "ניתן ליצור קשר בווטסאפ במספר 08-6858276.",
-            "לקוחות": "אנחנו עובדים עם מוסדות חינוך רבים ברחבי הארץ, כולל מועצות אזוריות: גדרה, יואב, אשקלון, באר טוביה, חבל יבנה ועוד.",
-            "מועצות": "בין לקוחותינו: מועצה אזורית גדרה, יואב, אשקלון, באר טוביה, חבל יבנה ועוד מוסדות חינוך ברחבי הארץ.",
-            "המלצות": "קיבלנו המלצות מרגשות מהורים! למשל: 'תודה רבה על שנת לימודים מוצלחת, רואים את ההשקעה המרובה', 'מענה אנושי ומהיר, בני חוזר בכל פעם עם חוויה נוספת', 'קייטנה של הביוקר, אין כמוכם!' ועוד המון חיוביות!",
-            "ביקורות": "ההורים מאוד מרוצים! 'ניהול מצוין', 'אווירה טובה וציוד מסודר', 'הילדים נהנים מאוד'. זה מה שחשוב לנו!",
-            "טפסים": "באתר שלנו אפשר להוריד טפסים שונים: טופס בקשה להפסקת השתתפות בצהרון, טופס סייעת שילוב, טופס בקשה להנחה, אישור הוצאת ילד מהמסגרת ועוד.",
-            "הנחה": "יש אפשרות להגיש בקשה להנחה באמצעות טופס ייעודי שאפשר להוריד מהאתר.",
-            "סייעת": "ניתן להגיש בקשה לסייעת שילוב או סייעת לתלמיד סוכרתי באמצעות הטפסים המתאימים באתר.",
+            "קשר": "ניתן ליצור קשר: טלפון 08-6694007, ווטסאפ 08-6858276, מייל office@navon-p.co.il. כתובת: המלך חסן השני 1, קריית עקרון.",
+            "טלפון": "טלפון המשרד: 08-6694007 או ווטסאפ: 08-6858276",
+            "וואטסאפ": "ניתן ליצור קשר בווטסאפ במספר 08-6858276",
         };
 
-        let messageCount = 0;
-
-        function getCurrentTime() {
-            const now = new Date();
-            return now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-        }
-
-        function addMessage(text, isUser) {
-            const welcome = document.getElementById('welcome');
-            if (welcome && !welcome.classList.contains('hidden')) {
-                welcome.classList.add('hidden');
-            }
-
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${isUser ? '👤' : '🤖'}</div>
-                <div class="message-content-wrapper">
-                    <div class="message-content">${text}</div>
-                    <div class="message-time">${getCurrentTime()}</div>
-                </div>
+        function addMsg(text, isUser) {
+            const box = document.getElementById('chatBox');
+            const msg = document.createElement('div');
+            msg.className = `message ${isUser ? 'user' : 'bot'}`;
+            msg.innerHTML = `
+                <div class="avatar">${isUser ? '👤' : '🤖'}</div>
+                <div class="bubble">${text}</div>
             `;
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            if (!isUser) {
-                messageCount++;
-                document.getElementById('messageCount').textContent = messageCount;
-            }
+            box.appendChild(msg);
+            box.scrollTop = box.scrollHeight;
         }
 
-        function showTyping() {
-            const messagesDiv = document.getElementById('messages');
-            const typingDiv = document.createElement('div');
-            typingDiv.id = 'typing';
-            typingDiv.className = 'typing-indicator';
-            typingDiv.innerHTML = `
-                <div class="message-avatar" style="background: linear-gradient(135deg, #137547, #F39237);">🤖</div>
-                <div class="typing-dots">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            `;
-            messagesDiv.appendChild(typingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        function getReply(txt) {
+            const lower = txt.toLowerCase();
+            for (const [key, val] of Object.entries(kb)) {
+                if (lower.includes(key.toLowerCase())) return val;
+            }
+            if (lower.includes('שע') || lower.includes('פתוח')) return kb["שעות"];
+            if (lower.includes('מחיר')) return "מומלץ ליצור קשר למשרד בטלפון 08-6694007 לקבלת הצעת מחיר מותאמת אישית.";
+            if (lower.includes('שלום') || lower.includes('היי')) return "שלום! שמח לעזור 😊 על מה תרצה לשמוע?";
+            return "אני כאן לעזור! תוכל לשאול על התוכניות שלנו, שעות פעילות, הרשמה או פרטי קשר. מה מעניין אותך?";
         }
 
-        function hideTyping() {
-            const typingDiv = document.getElementById('typing');
-            if (typingDiv) {
-                typingDiv.remove();
-            }
-        }
-
-        function getBotResponse(userMessage) {
-            const lowerMessage = userMessage.toLowerCase();
-            
-            for (const [key, value] of Object.entries(knowledgeBase)) {
-                if (lowerMessage.includes(key.toLowerCase())) {
-                    return value;
-                }
-            }
-            
-            if (lowerMessage.includes('שע') || lowerMessage.includes('פתוח') || lowerMessage.includes('פעיל')) {
-                return knowledgeBase["שעות"];
-            }
-            
-            if (lowerMessage.includes('מחיר') || lowerMessage.includes('עול') || lowerMessage.includes('כסף')) {
-                return "המחירים משתנים בהתאם לסוג התוכנית ומספר המשתתפים. מומלץ ליצור קשר ישירות למשרד בטלפון 08-6694007 או במייל office@navon-p.co.il לקבלת הצעת מחיר מותאמת אישית.";
-            }
-            
-            if (lowerMessage.includes('שלום') || lowerMessage.includes('היי') || lowerMessage.includes('הי ')) {
-                return "שלום! שמח לעזור 😊 על מה תרצה לשמוע? יש לנו תוכניות מדהימות בטכנולוגיה, מדע, אומנות, צהרונים, קייטנות ועוד!";
-            }
-            
-            if (lowerMessage.includes('תודה')) {
-                return "בשמחה! תמיד כאן לעזור. אם יש עוד שאלות - אני פה! 😊";
-            }
-            
-            const responses = [
-                "שאלה מעניינת! נבון פרויקטים מתמחה בתוכניות חינוך איכותיות. אני יכול לספר לך על:\n• תוכניות טכנולוגיה ותל\"ן\n• סדנאות מדע מרתקות\n• אומנות ויצירה\n• תוכניות לתיכונים\n• צהרונים וקייטנות\n\nעל מה תרצה לשמוע?",
-                "אני כאן לעזור! 😊 תוכל לשאול אותי על:\n📚 התוכניות והסדנאות שלנו\n⏰ שעות פעילות ופרטי התקשרות\n📝 הרשמה לצהרונים וקייטנות\n🎯 תוכניות מיוחדות לתיכונים\n\nמה מעניין אותך?",
-                "נבון פרויקטים מציעה מגוון רחב של תוכניות חינוכיות! אשמח לספר לך יותר. על איזה נושא תרצה לשמוע? טכנולוגיה? מדע? אומנות? או אולי פרטים על הרשמה?",
-            ];
-            
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            addMessage(message, true);
+        function send() {
+            const input = document.getElementById('userInput');
+            const txt = input.value.trim();
+            if (!txt) return;
+            addMsg(txt, true);
             input.value = '';
-            
-            showTyping();
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            hideTyping();
-            
-            const response = getBotResponse(message);
-            addMessage(response, false);
+            setTimeout(() => addMsg(getReply(txt), false), 500);
         }
 
-        function askQuestion(question) {
-            document.getElementById('messageInput').value = question;
-            sendMessage();
+        function ask(q) {
+            document.getElementById('userInput').value = q;
+            send();
         }
-
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        setTimeout(() => {
-            addMessage('שלום! 👋 אני העוזר הווירטואלי של נבון פרויקטים בחינוך.\n\nאני יכול לעזור לך עם:\n📚 מידע על התוכניות שלנו\n🎨 סדנאות ופעילויות\n📝 הרשמה לצהרונים וקייטנות\n📞 פרטי יצירת קשר\n\nמה תרצה לדעת?', false);
-        }, 1000);
     </script>
 </body>
 </html>
